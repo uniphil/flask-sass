@@ -22,7 +22,7 @@ def _convert(src, dst):
     css = Scss()
     source = codecs.open(src, 'r', encoding='utf-8').read()
     output = css.compile(source)
-    outfile = codecs.open(dst, 'w', encoding='utf-8')
+    outfile = codecs.open(dst, 'w')
     outfile.write(output)
     outfile.close()
 
