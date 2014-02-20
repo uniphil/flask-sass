@@ -16,17 +16,22 @@ import os
 import os.path
 import codecs
 
-from scss import Scss
+from scss import Scss, Sass
 
-def _convert(src, dst):
-    css = Scss()
+def _convert(src, dst, syntax):
+    if syntax == 'scss':
+        css = Scss()
+    else:
+        css = Sass()
     source = codecs.open(src, 'r', encoding='utf-8').read()
     output = css.compile(source)
     outfile = codecs.open(dst, 'w', encoding='utf-8')
     outfile.write(output)
     outfile.close()
 
-def sass(app, input_dir='assets/sass', output_dir='css', force=False):
+def sass(app, input_dir='assets/sass', output_dir='css', syntax='scss', force=False):
+    if syntax not in ('scss', 'sass'):
+        raise ValueError('syntax must be either "scss" or "sass"')
     if not hasattr(app, 'static_url_path'):
         app.logger.warning(DeprecationWarning('static_path is called '
                                     'static_url_path since Flask 0.7'))
@@ -40,7 +45,7 @@ def sass(app, input_dir='assets/sass', output_dir='css', force=False):
         input_dir = os.path.join(app.root_path, input_dir)
 
     def _sass(filepath):
-        sassfile = "%s/%s.scss" % (input_dir, filepath)
+        sassfile = "%s/%s.%s" % (input_dir, filepath, syntax)
         filename = "%s/%s.css" % (output_dir, filepath)
         cssfile = "%s%s/%s" % (app.root_path, static_url_path, filename)
 
