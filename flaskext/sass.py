@@ -16,13 +16,10 @@ import os
 import os.path
 import codecs
 
-from scss import Scss, Sass
+from scss import Scss
 
 def _convert(src, dst, syntax):
-    if syntax == 'scss':
-        css = Scss()
-    else:
-        css = Sass()
+    css = Scss()
     source = codecs.open(src, 'r', encoding='utf-8').read()
     output = css.compile(source)
     outfile = codecs.open(dst, 'w')
