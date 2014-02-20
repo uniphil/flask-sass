@@ -18,7 +18,7 @@ import codecs
 
 from scss import Scss
 
-def _convert(src, dst, syntax):
+def _convert(src, dst):
     css = Scss()
     source = codecs.open(src, 'r', encoding='utf-8').read()
     output = css.compile(source)
